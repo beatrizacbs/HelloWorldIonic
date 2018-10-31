@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, List } from 'ionic-angular';
 import { MovieProvider } from '../../providers/movie/movie';
 
 /**
@@ -19,6 +19,8 @@ import { MovieProvider } from '../../providers/movie/movie';
 })
 export class FeedPage {
 
+  public listaFilmes = new Array<any>();
+  public nomeUsuario: string = "Nome do usuario bla bla bla";
   public objetoFeed = {
     titulo: "Beatriz",
     data: "qualquer data",
@@ -28,7 +30,6 @@ export class FeedPage {
     timeComment: "11 min ago"
   }
 
-  public nomeUsuario: string = "Nome do usuario bla bla bla";
 
   constructor(
     public navCtrl: NavController,
@@ -45,7 +46,10 @@ export class FeedPage {
     //this.alertaNaTela();
     this.movieProvider.getLatestMovies().subscribe(
       data => {
-        console.log(data);
+        const response = (data as any);
+        const responseBody = JSON.parse(response._body);
+        this.listaFilmes = responseBody.results;
+        console.log(responseBody);
       },
       error => {
         console.log(error);
